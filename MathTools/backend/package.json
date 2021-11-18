@@ -1,0 +1,15 @@
+{
+  "name": "backend",
+  "version": "0.0.1",
+  "description": "Este es un proyecto para comportarse como un servidor HTTP y servir calculos con respecto a las areas de algunas figuras geometricas.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Carlos Zuluaga",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.4.0"
+  }
+}
