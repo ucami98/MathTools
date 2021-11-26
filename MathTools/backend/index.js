@@ -1,5 +1,6 @@
 const http = require("http")
-const {readFile, writeFile, appendFile} = require("fs") //si quiero toda la libreria lo dejo como const fs=require("fs"), comosolo quiero unos campos lo pongo como esta
+const registros = require("./helpers/files")
+//const {readFile, writeFile, appendFile} = require("fs") //si quiero toda la libreria lo dejo como const fs=require("fs"), comosolo quiero unos campos lo pongo como esta
 const areas = require("./helpers/areas")
 const colors = require("colors")
 
@@ -18,34 +19,41 @@ http.createServer(function (request, response) {
             const h = (incomingUrl.searchParams.get('h'))
             let area = areas.calcularAreaCilindro(r, h)
             if (area) {
-                response.write(JSON.stringify({area}))
-            } else {
-                response.write("error")
-            }
+                    let registrosJSON = JSON.parse(registros.leerRegistro("registroCilindro"))
+                    console.log(registrosJSON)
+                    registrosJSON.push({ area, "date": new Date() })
+                    registros.guardarRegistro(JSON.stringify(registrosJSON), "registroCilindro")
+                    response.write(JSON.stringify({ area }))
+                } else {
+                    response.write("error")
+                }
             break;
         case '/esfera':
             const ra = (incomingUrl.searchParams.get('r'))
             let areaes =areas.calcularAreaEsfera(ra)
-            if(areaes){
-                response.write(JSON.stringify({areaes}))
-                
+            if (areaes) {
+                let registrosJSON = JSON.parse(registros.leerRegistro("registroEsfera"))
+                console.log(registrosJSON)
+                registrosJSON.push({ areaes, "date": new Date() })
+                registros.guardarRegistro(JSON.stringify(registrosJSON), "registroEsfera")
+                response.write(JSON.stringify({ areaes }))
             } else {
                 response.write("error")
             }
-            
-            break;
+        break;
         case '/cubo':
             const hc = (incomingUrl.searchParams.get('h'))
             let areacu =areas.calcularAreaCubo(hc)
-            if(areacu){
-                response.write(JSON.stringify({areacu}))
-                //  response.write(`El resultado del area del cubo es: ${calcularAreaCubo(ha)}`)
-            
+            if (areacu) {
+                let registrosJSON = JSON.parse(registros.leerRegistro("registroCubo"))
+                console.log(registrosJSON)
+                registrosJSON.push({ areacu, "date": new Date() })
+                registros.guardarRegistro(JSON.stringify(registrosJSON), "registroCubo")
+                response.write(JSON.stringify({ areacu }))
             } else {
                 response.write("error")
             }
-            
-            break;
+        break;
 
         //ejemplo de fileSystem para traer archivos desde otra ubicación    
         case '/fileSystem':
